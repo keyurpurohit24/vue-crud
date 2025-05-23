@@ -7,7 +7,6 @@
       </div>
       <div class="input-box">
         <input type="password" placeholder="Create password" required />
-        <!-- test -->
       </div>
       <div class="input-box button">
         <input type="Submit" value="Login Now" />
