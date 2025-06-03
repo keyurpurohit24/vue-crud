@@ -1,3 +1,23 @@
 {
-    
+    "users":[
+        
+    ],
+    "locations":[
+        {
+            "id": "1",
+            "name": "Ahmedabad"
+        },
+        {
+            "id": "1",
+            "name": "Ahmedabad"
+        },
+        {
+            "id": "2",
+            "name": "Surat"
+        },
+        {
+            "id": "3",
+            "name": "Bhavnagar"
+        }
+    ]
 }

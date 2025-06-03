@@ -4,6 +4,11 @@ import Register from "@/components/register.vue"
 
 const routes = [
     {
+        name: "root",
+        component: Login,
+        path: "/"
+    },
+    {
         name: "login",
         component: Login,
         path: "/login"

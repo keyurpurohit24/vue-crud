@@ -1,18 +1,22 @@
 <template>
   <div class="wrapper">
     <h2>Registration</h2>
-    <form action="#">
+    <form @submit.prevent="validate">
       <div class="input-box">
-        <input type="text" placeholder="Enter your name" required />
+        <input type="text" v-model="formData.name" placeholder="Enter your name"  />
+        <span class="error-text" v-if="v$.formData.name.$errors[0]">{{ v$.formData.name.$errors[0].$message }}</span>
       </div>
       <div class="input-box">
-        <input type="text" placeholder="Enter your email" required />
+        <input type="text" v-model="formData.email" placeholder="Enter your email"  />
+        <span class="error-text" v-if="v$.formData.email.$errors[0]">{{ v$.formData.email.$errors[0].$message }}</span>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Create password" required />
+        <input type="password" v-model="formData.password" placeholder="Create password"  />
+        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{ v$.formData.password.$errors[0].$message }}</span>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Confirm password" required />
+        <input type="password" v-model="formData.password_confirmation" placeholder="Confirm password"  />
+        <span class="error-text" v-if="v$.formData.password_confirmation.$errors[0]">{{ v$.formData.password_confirmation.$errors[0].$message }}</span>
       </div>
       <div class="policy">
         <input type="checkbox" />
@@ -32,8 +36,57 @@
 </template>
 
 <script>
+import { useVuelidate } from "@vuelidate/core";
+import { required, email, maxLength, sameAs, helpers } from "@vuelidate/validators";
+
 export default {
   name: "Register-component",
+  setup() {
+    return {
+      v$: useVuelidate(),
+    };
+  },
+  methods:{
+    async validate(){
+      const isFormValid = await this.v$.$validate()
+      if(!isFormValid){
+        return;
+      }else{
+        alert('work')
+      }
+    }
+  },
+  data(){
+    return{
+      formData:{
+        name:'',
+        email:'',
+        password:'',
+        password_confirmation:''
+      }
+    }
+  },
+  validations(){
+    return{
+      formData:{
+        name:{
+          required,
+          name: maxLength(20),
+        },
+        email:{
+          required,
+          email,
+        },
+        password:{
+          required,
+        },
+        password_confirmation:{
+          required,
+          password_confirmation : helpers.withMessage("must be same as password",sameAs('password'))
+        }
+      },
+    }
+  }
 };
 </script>
 
@@ -132,5 +185,8 @@ form .text h3 a {
 }
 form .text h3 a:hover {
   text-decoration: underline;
+}
+.error-text{
+  color: red;
 }
 </style>
