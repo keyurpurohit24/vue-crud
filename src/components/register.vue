@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <h2>Registration</h2>
-    <form @submit.prevent="validate">
+    <form @submit.prevent="submit">
       <div class="input-box">
         <input type="text" v-model="formData.name" placeholder="Enter your name"  />
         <span class="error-text" v-if="v$.formData.name.$errors[0]">{{ v$.formData.name.$errors[0].$message }}</span>
@@ -47,22 +47,22 @@ export default {
     };
   },
   methods:{
-    async validate(){
+    async submit(){
       const isFormValid = await this.v$.$validate()
       if(!isFormValid){
         return;
       }else{
-        alert('work')
+        //Register user
       }
     }
   },
   data(){
     return{
       formData:{
-        name:'',
-        email:'',
-        password:'',
-        password_confirmation:''
+        name:null,
+        email:null,
+        password:null,
+        password_confirmation:null
       }
     }
   },

@@ -1,12 +1,14 @@
 <template>
-<div class="wrapper">
+  <div class="wrapper">
     <h2>Login</h2>
-    <form action="#">
+    <form @submit.prevent="submit">
       <div class="input-box">
         <input type="text" placeholder="Enter your email" required />
+        <span class="error-text" v-if="v$.formData.password_confirmation.$errors[0]">{{ v$.formData.email.$errors[0].$message }}</span>
       </div>
       <div class="input-box">
         <input type="password" placeholder="Create password" required />
+        <span class="error-text" v-if="v$.formData.password_confirmation.$errors[0]">{{ v$.formData.password.$errors[0].$message }}</span>
       </div>
       <div class="input-box button">
         <input type="Submit" value="Login Now" />
@@ -22,7 +24,41 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/validators";
+import { required, email } from "@vuelidate/core";
+
 export default {
-    name: "Login-component"
-}
+  name: "Login-component",
+  setup() {
+    return{
+      v$: useVuelidate()
+    }
+  },
+  validation() {
+    return {
+      formData: {
+        email: { required, email },
+        password: { required },
+      },
+    };
+  },
+  data() {
+    return {
+      formData: {
+        email: null,
+        password: null,
+      },
+    };
+  },
+  methods: {
+    async submit() {
+      const isFormValid = await this.v$.$validate();
+      if (!isFormValid) {
+        return;
+      } else {
+        //Register user
+      }
+    },
+  },
+};
 </script>
