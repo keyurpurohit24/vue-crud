@@ -3,12 +3,12 @@
     <h2>Login</h2>
     <form @submit.prevent="submit">
       <div class="input-box">
-        <input type="text" placeholder="Enter your email" required />
-        <span class="error-text" v-if="v$.formData.password_confirmation.$errors[0]">{{ v$.formData.email.$errors[0].$message }}</span>
+        <input type="text" v-model="formData.email" placeholder="Enter your email" />
+        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{ v$.formData.email.$errors[0].$message }}</span>
       </div>
       <div class="input-box">
-        <input type="password" placeholder="Create password" required />
-        <span class="error-text" v-if="v$.formData.password_confirmation.$errors[0]">{{ v$.formData.password.$errors[0].$message }}</span>
+        <input type="password" v-model="formData.password" placeholder="Create password" />
+        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{ v$.formData.password.$errors[0].$message }}</span>
       </div>
       <div class="input-box button">
         <input type="Submit" value="Login Now" />
@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/validators";
-import { required, email } from "@vuelidate/core";
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
 
 export default {
   name: "Login-component",
@@ -34,13 +34,25 @@ export default {
       v$: useVuelidate()
     }
   },
-  validation() {
+  validations() {
     return {
       formData: {
         email: { required, email },
         password: { required },
       },
     };
+  },
+  
+  methods: {
+    async submit() {
+      const isFormValid = await this.v$.$validate();
+      if (!isFormValid) {
+        return;
+      } else {
+        //Register user
+        console.log();
+      }
+    },
   },
   data() {
     return {
@@ -49,16 +61,6 @@ export default {
         password: null,
       },
     };
-  },
-  methods: {
-    async submit() {
-      const isFormValid = await this.v$.$validate();
-      if (!isFormValid) {
-        return;
-      } else {
-        //Register user
-      }
-    },
   },
 };
 </script>
