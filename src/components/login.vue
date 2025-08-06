@@ -3,12 +3,24 @@
     <h2>Login</h2>
     <form @submit.prevent="submit">
       <div class="input-box">
-        <input type="text" v-model="formData.email" placeholder="Enter your email" />
-        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{ v$.formData.email.$errors[0].$message }}</span>
+        <input
+          type="text"
+          v-model="formData.email"
+          placeholder="Enter your email"
+        />
+        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{
+          v$.formData.email.$errors[0].$message
+        }}</span>
       </div>
       <div class="input-box">
-        <input type="password" v-model="formData.password" placeholder="Create password" />
-        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{ v$.formData.password.$errors[0].$message }}</span>
+        <input
+          type="password"
+          v-model="formData.password"
+          placeholder="Create password"
+        />
+        <span class="error-text" v-if="v$.formData.password.$errors[0]">{{
+          v$.formData.password.$errors[0].$message
+        }}</span>
       </div>
       <div class="input-box button">
         <input type="Submit" value="Login Now" />
@@ -30,9 +42,9 @@ import { required, email } from "@vuelidate/validators";
 export default {
   name: "Login-component",
   setup() {
-    return{
-      v$: useVuelidate()
-    }
+    return {
+      v$: useVuelidate(),
+    };
   },
   validations() {
     return {
@@ -42,7 +54,7 @@ export default {
       },
     };
   },
-  
+
   methods: {
     async submit() {
       const isFormValid = await this.v$.$validate();
@@ -64,3 +76,7 @@ export default {
   },
 };
 </script>
+
+<style>
+@import url("@/assets/css/login-signup-style.css");
+</style>

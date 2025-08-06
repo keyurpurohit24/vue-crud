@@ -1,6 +1,15 @@
 {
     "users":[
-        
+        {
+            "id": "1",
+            "name": "keyur",
+            "password": "Abc#123"
+        },
+        {
+            "id": "2",
+            "name": "aditya",
+            "password": "8910$345"
+        }
     ],
     "locations":[
         {
