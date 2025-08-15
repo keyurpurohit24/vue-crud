@@ -37,7 +37,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, helpers } from "@vuelidate/validators";
 
 export default {
   name: "Login-component",
@@ -49,8 +49,13 @@ export default {
   validations() {
     return {
       formData: {
-        email: { required, email },
-        password: { required },
+        email: { 
+          required: helpers.withMessage("Email is requied", required),
+          email: helpers.withMessage("Email must be valid", email),
+        },
+        password: { 
+          required: helpers.withMessage("Password is required", required),
+        },
       },
     };
   },

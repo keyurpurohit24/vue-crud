@@ -50,8 +50,14 @@
       </div>
 
       <div class="policy">
-        <input type="checkbox" v-model="formData.is_accept_terms" />
-        <h3>I accept all terms & condition</h3>
+        <input
+          id="is_accept_terms"
+          type="checkbox"
+          v-model="formData.is_accept_terms"
+        />
+        <label class="label" for="is_accept_terms"
+          >I accept all terms & condition</label
+        >
       </div>
       <span
         class="error-text"
@@ -87,6 +93,7 @@ import {
   maxLength,
   sameAs,
   helpers,
+  minLength,
 } from "@vuelidate/validators";
 import axios from "axios";
 
@@ -116,6 +123,16 @@ export default {
         },
         password: {
           required: helpers.withMessage("Password is required", required),
+          minLength: helpers.withMessage(
+            "Password must be at least 6 characters",
+            minLength(6)
+          ),
+          strongPassword: helpers.withMessage(
+            "Please choose stronger password",
+            helpers.regex(
+              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/
+            )
+          ),
         },
         password_confirmation: {
           required: helpers.withMessage(
