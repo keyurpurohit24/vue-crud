@@ -38,6 +38,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required, email, helpers } from "@vuelidate/validators";
+import axios from "axios";
 
 export default {
   name: "Login-component",
@@ -65,9 +66,28 @@ export default {
       const isFormValid = await this.v$.$validate();
       if (!isFormValid) {
         return;
-      } else {
-        //Register user
-        console.log();
+      }
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/users",
+          {
+            params: {
+              email: this.formData.email,
+              password: this.formData.password,
+            },
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.data.length > 0) {
+          alert("Login successful!");
+          window.location.href = "/";
+        } else {
+          alert("Invalid credentials");
+        }
+      } catch (error) {
+        alert("An error occurred while logging in.");
       }
     },
   },

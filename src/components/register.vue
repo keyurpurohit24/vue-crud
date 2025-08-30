@@ -85,8 +85,9 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, computed, toRef } from "vue";
 import useVuelidate from "@vuelidate/core";
+import axios from "axios";
 import {
   required,
   email,
@@ -95,20 +96,19 @@ import {
   helpers,
   minLength,
 } from "@vuelidate/validators";
-import axios from "axios";
 
 export default {
   name: "RegisterComponent",
   setup() {
     const formData = reactive({
-      name: null,
-      email: null,
-      password: null,
-      password_confirmation: null,
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
       is_accept_terms: false,
     });
 
-    const rules = {
+    const rules = computed(() => ({
       formData: {
         name: {
           required: helpers.withMessage("Name is required", required),
@@ -127,11 +127,10 @@ export default {
             "Password must be at least 6 characters",
             minLength(6)
           ),
+          // stronger & anchored
           strongPassword: helpers.withMessage(
             "Please choose stronger password",
-            helpers.regex(
-              /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/
-            )
+            helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{6,}$/)
           ),
         },
         password_confirmation: {
@@ -141,14 +140,14 @@ export default {
           ),
           sameAsPassword: helpers.withMessage(
             "Passwords must match",
-            sameAs(() => formData.password)
+            sameAs(toRef(formData, "password"))
           ),
         },
         is_accept_terms: {
           required: helpers.withMessage("You must accept the terms", required),
         },
       },
-    };
+    }));
 
     const v$ = useVuelidate(rules, { formData });
 
@@ -157,7 +156,12 @@ export default {
       if (!isValid) return;
 
       try {
-        const response = await axios.post("/users", formData);
+
+        const response = await axios.post("http://localhost:3000/users", {
+          "name": formData.name,
+          "email": formData.email,
+          "password": formData.password, 
+        });
         console.log("Registered:", response.data);
         alert("Registration successful!");
         window.location.href = "/login";
